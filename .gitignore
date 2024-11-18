@@ -1,0 +1,19 @@
+# Ignore internal Git files
+.git/
+COMMIT_EDITMSG
+FETCH_HEAD
+HEAD
+config
+description
+index
+logs/
+objects/
+refs/
+info/
+hooks/
+
+# Ignore temporary files and directories
+*.log
+*.tmp
+.DS_Store
+*.swp
