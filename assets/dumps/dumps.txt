@@ -1,0 +1,3 @@
+This "dump" folder stores all dumped files from the process of creation of the php file.
+
+Nothing much here. Use it if you want to recover files immediately without opening recyclee bins.
