@@ -7,10 +7,10 @@
 
 <div align="center">
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)](https://facebook.com/byronjay)
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](license.txt)
+[![Status](https://img.shields.io/badge/Status-Active-green)](https://github.com/ByronJayBaylon/PrimeSync_IMS.git)
+[![GitHub Issues](https://img.shields.io/badge/Issues-20%20open-yellow)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
+[![GitHub Pull Requests](https://img.shields.io/badge/Pull%20Requests-1%20open-yellow)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+[![License](https://img.shields.io/badge/License-BSIT%2C%20PrimeSync%20Solutions-0D92F4)](license.txt)
 
 </div>
 
@@ -103,7 +103,7 @@ Add additional notes about how to deploy this on a live system.
 
 ## ✍️ Authors <a name = "authors" id="authors"></a>
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+- [Byronjay Baylon](https://facebook.com/baylonbyronjay) - Idea & Initial work
 
 See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
 
