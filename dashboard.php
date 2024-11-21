@@ -75,7 +75,7 @@ $conn->close();
             </div>
             <div class="overview-box">
                 <h2><?php echo $total_sales_count; ?></h2>
-                <p>Total Sales Made</p>
+                <p>Total Sales</p>
             </div>
             <div class="overview-box">
                 <h2>₱<?php echo number_format($total_sales_amount, 2); ?></h2>

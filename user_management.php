@@ -78,8 +78,8 @@ if (isset($_SESSION['message'])) {
                             <td><?php echo htmlspecialchars($account['date_created']); ?></td>
                             <td>
                                 <?php if (
-                                    $logged_in_user_type === 'Owner' || 
-                                    ($logged_in_user_type === 'Admin' && $account['account_type'] !== 'Admin' && $account['account_type'] !== 'Owner')
+                                    $logged_in_user_type === 'Admin' || 
+                                    ($logged_in_user_type === 'Owner' && $account['account_type'] !== 'Owner' && $account['account_type'] !== 'Admin')
                                 ): ?>
                                     <button class="edit-btn modal-btn edit" data-id="<?php echo htmlspecialchars($account['id']); ?>" data-username="<?php echo htmlspecialchars($account['username']); ?>" data-account-type="<?php echo htmlspecialchars($account['account_type']); ?>">Edit</button>
                                     <button class="delete-btn modal-btn confirm-red" data-id="<?php echo htmlspecialchars($account['id']); ?>">Delete</button>
@@ -138,12 +138,12 @@ if (isset($_SESSION['message'])) {
                 <br>
                 <label for="account_type">Account Type</label>
                 <select id="account_type" name="account_type" required>
+                <?php if ($logged_in_user_type === 'Admin'): ?>
+                    <option value="Admin">Admin</option>
+                    <option value="Owner">Owner</option>
+                <?php endif; ?>
                     <option value="Clerk">Clerk</option>
                     <option value="Cashier">Cashier</option>
-                    <?php if ($logged_in_user_type === 'Owner'): ?>
-                        <option value="Admin">Admin</option>
-                        <option value="Owner">Owner</option>
-                    <?php endif; ?>
                 </select>
                 <br>
                 <button type="submit">Add New Account</button>
@@ -163,12 +163,12 @@ if (isset($_SESSION['message'])) {
                 <br>
                 <label for="edit_account_type">Account Type</label>
                 <select id="edit_account_type" name="account_type" required>
+                <?php if ($logged_in_user_type === 'Admin'): ?>
+                    <option value="Admin">Admin</option>
+                    <option value="Owner">Owner</option>
+                <?php endif; ?>
                     <option value="Clerk">Clerk</option>
                     <option value="Cashier">Cashier</option>
-                    <?php if ($logged_in_user_type === 'Owner'): ?>
-                        <option value="Admin">Admin</option>
-                        <option value="Owner">Owner</option>
-                    <?php endif; ?>
                 </select>
                 <br>
                 <button type="submit">Save Changes</button>
@@ -184,10 +184,10 @@ if (isset($_SESSION['message'])) {
             <p>Are you sure you want to delete this account? Please enter your password to confirm.</p>
             <form id="deleteForm" method="post" action="delete_account.php">
                 <input type="hidden" name="id" id="deleteId">
-                <?php if ($logged_in_user_type === 'Owner'): ?>
-                    <label for="admin_password">Owner Password:</label>
+                <?php if ($logged_in_user_type === 'Admin'): ?>
+                    <label for="admin_password">Admin Password:</label>
                 <?php else: ?>
-                    <label for="admin_password">Administrator Password:</label>
+                    <label for="admin_password">Owner Password:</label>
                 <?php endif; ?>
                 <div class="password-container">
                     <input style="padding: 5px; border-radius: 5px; width: 80%; margin: 15px;" type="password" id="admin_password" name="admin_password" required>

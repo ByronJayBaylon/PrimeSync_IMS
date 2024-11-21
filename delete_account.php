@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Implement the deletion rules
-    if (($currentUserType === 'Owner') || ($currentUserType === 'Admin' && ($accountToDelete !== 'Admin' && $accountToDelete !== 'Owner'))) {
+    if (($currentUserType === 'Admin') || ($currentUserType === 'Owner' && ($accountToDelete !== 'Owner' && $accountToDelete !== 'Admin'))) {
         $sql = "DELETE FROM accounts WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $id);
