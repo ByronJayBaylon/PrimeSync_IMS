@@ -57,9 +57,6 @@ if (isset($_SESSION['message'])) {
         <!-- User Table Container -->
         <div class="table-container">
             <table border="1" cellspacing="0" cellpadding="10" class="user-table" id="userTable">
-                <caption style="text-align: left;">
-                    All Users
-                </caption>
                 <thead>
                     <tr>
                         <th>Account ID</th>
@@ -119,7 +116,7 @@ if (isset($_SESSION['message'])) {
     <div id="addUserModal" class="usermodal">
         <div class="usermodal-content">
             <span class="close" id="closeAddUserModal">&times;</span>
-            <h2>Add User</h2>
+            <h2>Add Account</h2>
             <form id="addUserForm" method="post" action="add_account.php">
                 <label for="username">User Name</label>
                 <input type="text" id="username" name="username" required>
@@ -179,7 +176,7 @@ if (isset($_SESSION['message'])) {
     <!-- Delete Modal Structure -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
+            <span class="close" id="closeModal"></span>
             <h2>Confirm Delete</h2>
             <p>Are you sure you want to delete this account? Please enter your password to confirm.</p>
             <form id="deleteForm" method="post" action="delete_account.php">
@@ -198,9 +195,5 @@ if (isset($_SESSION['message'])) {
             </form>
         </div>
     </div>
-
-    <script>
-
-    </script>
 </body>
 </html>
