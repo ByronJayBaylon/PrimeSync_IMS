@@ -57,9 +57,6 @@ $conn->close();
         <!-- Supplier Table Container -->
         <div class="table-container">
             <table border="1" cellspacing="0" cellpadding="10" class="supplier-table" id="supplierTable">
-                <caption style="text-align: left;">
-                    All Suppliers
-                </caption>
                 <thead>
                     <tr>
                         <th>Supplier ID</th>
@@ -71,13 +68,14 @@ $conn->close();
                 </thead>
                 <tbody>
                     <?php foreach ($suppliers as $index => $supplier): ?>
-                        <tr>
+                        <tr id="supplier-<?php echo htmlspecialchars($supplier['supplier_id']); ?>">
                             <td><?php echo htmlspecialchars($supplier['supplier_id']); ?></td>
                             <td><?php echo htmlspecialchars($supplier['supplier_name']); ?></td>
                             <td><?php echo htmlspecialchars($supplier['contact_number']); ?></td>
                             <td><?php echo htmlspecialchars($supplier['email']); ?></td>
                             <td>
-                                <button class="request-btn modal-btn edit" data-id="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" data-name="<?php echo htmlspecialchars($supplier['supplier_name']); ?>">Request Stock</button>
+                                <button class="request-btn modal-btn edit" data-id="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" data-name="<?php echo htmlspecialchars($supplier['supplier_name']); ?>">Request Restock</button>
+                                <button class="delete-supplier-btn modal-btn confirm-red" data-id="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" data-name="<?php echo htmlspecialchars($supplier['supplier_name']); ?>">Delete Supplier</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -85,7 +83,6 @@ $conn->close();
             </table>
         </div>
 
-        
         <!-- Add Supplier Modal Structure -->
         <button id="openAddSupplierModal" class="modal-btn add"><b style="font-size: 15px;">+ </b>Add New Supplier</button>
 
@@ -115,7 +112,7 @@ $conn->close();
         <div id="requestStockModal" class="usermodal">
             <div class="usermodal-content">
                 <span class="close" id="closeRequestStockModal">&times;</span>
-                <h2>Request Stock</h2>
+                <h2>Request Restock</h2>
                 <form id="requestStockForm" method="post" action="request_stock.php">
                     <input type="hidden" id="supplier_id" name="supplier_id">
                     <label for="item_name">Item Name</label>
@@ -128,58 +125,126 @@ $conn->close();
                 </form>
             </div>
         </div>
+
+        <!-- Delete Supplier Modal Structure -->
+        <div id="deleteSupplierModal" class="usermodal">
+            <div class="usermodal-content">
+                <span class="close" id="closeDeleteSupplierModal"></span>
+                <h2>Delete Supplier</h2>
+                <form id="deleteSupplierForm" method="post">
+                    <input type="hidden" id="delete_supplier_id" name="supplier_id">
+                    <p>Are you sure you want to delete this supplier?</p>
+                    <button type="submit" class="modal-btn confirm-red">Delete</button>
+                    <button type="button" class="modal-btn cancel" id="cancelBtn">Cancel</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
         // Additional JavaScript for managing modals and form submissions
         document.addEventListener('DOMContentLoaded', () => {
-    const addSupplierModal = document.getElementById('addSupplierModal');
-    const openAddSupplierModal = document.getElementById('openAddSupplierModal');
-    const closeAddSupplierModal = document.getElementById('closeAddSupplierModal');
-    const requestStockModal = document.getElementById('requestStockModal');
-    const closeRequestStockModal = document.getElementById('closeRequestStockModal');
-    const requestBtns = document.querySelectorAll('.request-btn');
+            const addSupplierModal = document.getElementById('addSupplierModal');
+            const openAddSupplierModal = document.getElementById('openAddSupplierModal');
+            const closeAddSupplierModal = document.getElementById('closeAddSupplierModal');
+            const requestStockModal = document.getElementById('requestStockModal');
+            const closeRequestStockModal = document.getElementById('closeRequestStockModal');
+            const deleteSupplierModal = document.getElementById('deleteSupplierModal');
+            const closeDeleteSupplierModal = document.getElementById('closeDeleteSupplierModal');
+            const requestBtns = document.querySelectorAll('.request-btn');
+            const deleteSupplierBtns = document.querySelectorAll('.delete-supplier-btn');
+            const cancelBtn = document.getElementById('cancelBtn');
 
-    if (openAddSupplierModal && addSupplierModal && closeAddSupplierModal) {
-        // Open add supplier modal when button is clicked
-        openAddSupplierModal.addEventListener('click', () => {
-            addSupplierModal.style.display = 'block';
-        });
+            if (openAddSupplierModal && addSupplierModal && closeAddSupplierModal) {
+                // Open add supplier modal when button is clicked
+                openAddSupplierModal.addEventListener('click', () => {
+                    addSupplierModal.style.display = 'block';
+                });
 
-        // Close add supplier modal when button is clicked
-        closeAddSupplierModal.addEventListener('click', () => {
-            addSupplierModal.style.display = 'none';
-        });
+                // Close add supplier modal when button is clicked
+                closeAddSupplierModal.addEventListener('click', () => {
+                    addSupplierModal.style.display = 'none';
+                });
 
-        // Close add supplier modal when clicking outside of it
-        window.addEventListener('click', (event) => {
-            if (event.target === addSupplierModal) {
-                addSupplierModal.style.display = 'none';
+                // Close add supplier modal when clicking outside of it
+                window.addEventListener('click', (event) => {
+                    if (event.target === addSupplierModal) {
+                        addSupplierModal.style.display = 'none';
+                    }
+                });
             }
+
+            requestBtns.forEach(button => {
+                button.addEventListener('click', () => {
+                    const supplierId = button.getAttribute('data-id');
+                    document.getElementById('supplier_id').value = supplierId;
+                    document.getElementById('item_name').value = ''; // Empty the item name field
+                    requestStockModal.style.display = 'block';
+                });
+            });
+
+            closeRequestStockModal.addEventListener('click', () => {
+                requestStockModal.style.display = 'none';
+            });
+
+            // Close request stock modal when clicking outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === requestStockModal) {
+                    requestStockModal.style.display = 'none';
+                }
+            });
+
+            deleteSupplierBtns.forEach(button => {
+                button.addEventListener('click', () => {
+                    const supplierId = button.getAttribute('data-id');
+                    document.getElementById('delete_supplier_id').value = supplierId;
+                    deleteSupplierModal.style.display = 'block';
+                });
+            });
+
+            closeDeleteSupplierModal.addEventListener('click', () => {
+                deleteSupplierModal.style.display = 'none';
+            });
+
+            // Close delete supplier modal when clicking outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === deleteSupplierModal) {
+                    deleteSupplierModal.style.display = 'none';
+                }
+            });
+
+            if (cancelBtn) {
+                    // Close delete modal when cancel button is clicked
+                    cancelBtn.addEventListener('click', () => {
+                        deleteSupplierModal.style.display = 'none'; // Hide the delete modal
+                    });
+                };
+
+            // Handle delete supplier form submission with AJAX
+            document.getElementById('deleteSupplierForm').onsubmit = function(event) {
+                event.preventDefault();
+                const supplierId = document.getElementById('delete_supplier_id').value;
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "delete_supplier.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        console.log(xhr.responseText); // Log the response
+                        if (xhr.responseText.trim() === "Success") {
+                            document.getElementById('supplier-' + supplierId).remove();
+                            deleteSupplierModal.style.display = 'none';
+                        } else {
+                            alert('Error deleting supplier: ' + xhr.responseText);
+                        }
+                    } else {
+                        alert('Error deleting supplier. Please try again.');
+                    }
+                };
+                xhr.send("supplier_id=" + supplierId);
+            };
+
         });
-    }
-
-    requestBtns.forEach(button => {
-        button.addEventListener('click', () => {
-            const supplierId = button.getAttribute('data-id');
-            document.getElementById('supplier_id').value = supplierId;
-            document.getElementById('item_name').value = ''; // Empty the item name field
-            requestStockModal.style.display = 'block';
-        });
-    });
-
-    closeRequestStockModal.addEventListener('click', () => {
-        requestStockModal.style.display = 'none';
-    });
-
-    // Close request stock modal when clicking outside of it
-    window.addEventListener('click', (event) => {
-        if (event.target === requestStockModal) {
-            requestStockModal.style.display = 'none';
-        }
-    });
-});
-
     </script>
 </body>
 </html>
