@@ -491,8 +491,29 @@ tbody tr:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.usermodal-content h2 {
-    margin-bottom: 20px;
+.usermodal-content:not(.add-item-form) {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.usermodal-content.POS-view {
+    max-width: 1000px;
+    text-align: left;
+}
+
+.usermodal-content.POS-view button {
+    text-align: center;
+}
+
+.usermodal-content.POS-view p {
+    font-size: 20px;
 }
 
 .usermodal-content label {

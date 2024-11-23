@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php"); // Redirect to login page if not logged in
+    header("Location: login.php");
     exit();
 }
 ?>
@@ -142,16 +142,15 @@ if (!isset($_SESSION['username'])) {
                     }]
                 },
                 options: {
-                    title: {
-                        text: 'Sales and Profit Chart',
-                        display: true
-                    },
-                    events: [],
-                    legend: {
-                        display: true
-                    },
-                    tooltips: {
-                        mode: 'index'
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sales and Profit Chart'
+                        }
                     },
                     scales: {
                         y: {
