@@ -53,10 +53,12 @@ if (isset($_SESSION['message'])) {
 
     <div class="dashboard-container">
         <h1>User Management</h1>
+        <p>Manage your item categories from this page.</p>
 
         <!-- User Table Container -->
         <div class="table-container">
             <table border="1" cellspacing="0" cellpadding="10" class="user-table" id="userTable">
+            <caption style="text-align: left;">Accounts List</caption>
                 <thead>
                     <tr>
                         <th>Account ID</th>
@@ -95,6 +97,7 @@ if (isset($_SESSION['message'])) {
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
+                <option value="50">50</option>
             </select>
             entries
         </div>
@@ -168,7 +171,7 @@ if (isset($_SESSION['message'])) {
                     <option value="Cashier">Cashier</option>
                 </select>
                 <br>
-                <button type="submit">Save Changes</button>
+                <button type="submit" class="modal-btn edit">Save Changes</button>
             </form>
         </div>
     </div>
@@ -188,7 +191,7 @@ if (isset($_SESSION['message'])) {
                 <?php endif; ?>
                 <div class="password-container">
                     <input style="padding: 5px; border-radius: 5px; width: 80%; margin: 15px;" type="password" id="admin_password" name="admin_password" required>
-                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('admin_password')">Show</button>
+                    <button type="button" class="toggle-password toggle-on-delete-modal" onclick="togglePasswordVisibility('admin_password')">Show</button>
                 </div>
                 <button type="button" class="modal-btn cancel" id="cancelBtn">Cancel</button>
                 <button type="submit" class="modal-btn confirm-red" id="confirmDelete">Delete</button>

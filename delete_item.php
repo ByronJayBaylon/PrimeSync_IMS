@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include 'db_connector.php';
 
@@ -18,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $stmt->bind_param('i', $item_id);
 
     if ($stmt->execute()) {
-        header("Location: inventory.php");
+        echo "<script>alert('Item successfully deleted in inventory.'); window.location.href='inventory.php';</script>";
     } else {
         echo "Error: " . $conn->error;
     }
@@ -37,14 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     <title>Delete Item</title>
 </head>
 <body>
+    <?php include 'header.php'; ?> <!-- Include the header -->
+    <?php include 'sidebar.php'; ?> <!-- Include the sidebar -->
     <div class="dashboard-container">
         <h1>Delete Item</h1>
         <form method="POST" action="delete_item.php">
             <p>Are you sure you want to delete this item?</p>
             <input type="hidden" name="item_id" value="<?php echo $item_id; ?>">
-            <button type="submit">Delete</button>
+            <button type="submit" class="modal-btn confirm-red">Delete</button>
+            <button type="button" class="modal-btn cancel" onclick="window.location.href='inventory.php';">Cancel</button>
         </form>
     </div>
-<?php include 'footer.php';
+    <?php include 'footer.php'; ?> <!-- Include the footer -->
 </body>
 </html>

@@ -67,10 +67,6 @@ body.login-body {
     font-family: inherit;
 }
 
-.edit-items{
-    
-}
-
 .form-input::placeholder {
     color: #aaa;
 }
@@ -398,7 +394,7 @@ table {
 /* Style for the table header and contents */
 th, td {
     border: 1px solid;
-    padding: 3px; /* Increase padding for wider columns */
+    padding: 15px; /* Increase padding for wider columns */
     padding-left: 15px;
     padding-right: 15px;
     text-align: left;
@@ -483,7 +479,7 @@ tbody tr:hover {
     padding-top: 60px;
 }
 
-.usermodal-content {
+.usermodal-content:not(.add-item-form) {
     background-color: #fefefe;
     margin: 5% auto;
     padding: 20px;
@@ -509,6 +505,8 @@ tbody tr:hover {
 .usermodal-content input[type="text"], 
 .usermodal-content input[type="password"], 
 .usermodal-content input[type="number"],
+.usermodal-content input[type="email"],
+.usermodal-content textarea,
 .form-input input[type="number"],
 .edit-items-div input[type="text"],
 .usermodal-content select {
@@ -521,6 +519,19 @@ tbody tr:hover {
     border-radius: 5px;
     font-size: 16px;
 }
+.add-item-form select, .add-item-form input[type="text"]{
+    margin-left: 10px;
+    justify-content: left;
+    width: calc(100% - 5%); /* Ensure padding doesn't overflow container */
+}
+
+.add-item-form button {
+    margin-left: 40%;
+}
+
+.usermodal-content textarea{
+    resize: vertical;
+}
 
 .form-input input[type="number"] {
     width: 70%;
@@ -530,7 +541,7 @@ tbody tr:hover {
     justify-content: left;
 }
 
-.usermodal-content button:not(.toggle-password, #deleteSupplierForm button){
+.usermodal-content button:not(.toggle-password, #deleteSupplierForm button, .confirm-red, .edit){
     padding: 10px 20px;
     background-color: #10c875;
     border: none;
@@ -539,7 +550,7 @@ tbody tr:hover {
     font-size: 16px;
     cursor: pointer;
 }
-.usermodal-content button:hover:not(.toggle-password, #deleteSupplierForm button) {
+.usermodal-content button:hover:not(.toggle-password, #deleteSupplierForm button, .confirm-red, .edit) {
     background-color: #177b4e;
 }
 
@@ -632,9 +643,9 @@ tbody tr:hover {
 
 /* Adjust margins to avoid overlapping with fixed elements */
 .dashboard-overview {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin: 20px 0;
 }
 
 .overview-box {
@@ -644,6 +655,7 @@ tbody tr:hover {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     text-align: center;
+    padding: 20px;
 }
 
 .overview-box h2 {
@@ -698,7 +710,7 @@ tbody tr:hover {
 .toggle-password {
     font-family: 'Poppins', sans-serif;
     position: absolute;
-    right: -60px;
+    right: -14%;
     top: 50%;
     transform: translateY(-50%);
     background: #99F3BD;
@@ -708,6 +720,19 @@ tbody tr:hover {
     cursor: pointer;
     padding: 8px;
 }
+.toggle-on-delete-modal{
+    right: -8%;
+}
+.category-delete-toggle{
+    right: 36.2%;
+    top: 43.8%
+}
+
+.category-delete-toggle-ao{
+    right: 39.1%;
+    top: 34.9%
+}
+
 .admin-password-toggle{
     right: -25px;
     padding: 4px;
@@ -719,14 +744,13 @@ tbody tr:hover {
     width: 88%;
 }
 #admin_password{
-    font-size: 12px;
+    font-size: 15px;
     font-family: 'Poppins', sans-serif;
     position: relative;
     padding: 3px;
-    border-radius:
-    5px;
-    width: 82%;
-    margin: 5px;
+    border-radius: 5px;
+    width: 90%;
+    margin: 1px;
 }
 /* --------------- End of Password Togglers Styles---------- */
 
@@ -809,7 +833,87 @@ tbody tr:hover {
 /* End of Inventory List Styles */
 
 /* Edit Items Div container */
-.edit-items-div, .add-quantity-div {
+.edit-items-div, .add-quantity-div{
     width: 50%;
     margin-left: 32%;
+}
+
+.add-item-div {
+    width: 40%;
+    margin-left: 35%;
+}
+
+/* Styles for sales report page */
+.button-container {
+    margin-bottom: 20px;
+}
+
+.button-container button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Specific style for the dashboard container on reports */
+.dashboard-container.reports {
+    background-color: #f6fff1;
+    margin: 20px; 
+}
+
+.graph-div {
+    background-color: #f6fff1;
+    margin: 100px; 
+    width: 50%;
+}
+
+/* ----------Dashboard overview styles------------------ */
+
+.overview-box {
+    flex: 1;
+    padding: 30px;
+    background-color: #99F3BD;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    padding: 20px;
+}
+
+.overview-box h2 {
+    margin: 0;
+    font-size: 36px;
+    color: #333;
+}
+
+.overview-box p {
+    margin: 10px 0 0;
+    font-size: 18px;
+    color: #666;
+    margin-top: -8px;
+}
+
+.low-stock-alert {
+    border: 1px solid red;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 50px;
+    background-color: #ffe6e6;
+    width: 30%;
+}
+.low-stock-alert h2 {
+    color: red;
+    margin-bottom: 10px;
+}
+.low-stock-alert table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.low-stock-alert th, .low-stock-alert td {
+    border: 1px solid red;
+    padding: 5px;
+    text-align: left;
+    font-size: 15px;
+}
+.low-stock-alert th {
+    background-color: #990000;
+    color: white;
 }

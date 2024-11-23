@@ -53,14 +53,16 @@ $conn->close();
 
     <div class="dashboard-container">
         <h1>Supplier Management</h1>
+        <p>Manage the flow of your stocks with your suppliers from this page.</p>
 
         <!-- Supplier Table Container -->
         <div class="table-container">
             <table border="1" cellspacing="0" cellpadding="10" class="supplier-table" id="supplierTable">
+                <caption style="text-align: left;">Suppliers List</caption>
                 <thead>
                     <tr>
                         <th>Supplier ID</th>
-                        <th>Name</th>
+                        <th>Supplier Name</th>
                         <th>Contact Number</th>
                         <th>Email</th>
                         <th>Action</th>
@@ -103,7 +105,7 @@ $conn->close();
                     <label for="supplier_address">Address</label>
                     <textarea id="supplier_address" name="address"></textarea>
                     <br>
-                    <button type="submit">Add New Supplier</button>
+                    <button type="submit" class="modal-btn add">Add New Supplier</button>
                 </form>
             </div>
         </div>
@@ -121,7 +123,7 @@ $conn->close();
                     <label for="quantity">Quantity</label>
                     <input type="number" id="quantity" name="quantity" required>
                     <br>
-                    <button type="submit">Send Request</button>
+                    <button type="submit" class="modal-btn edit">Send Request</button>
                 </form>
             </div>
         </div>
@@ -129,20 +131,28 @@ $conn->close();
         <!-- Delete Supplier Modal Structure -->
         <div id="deleteSupplierModal" class="usermodal">
             <div class="usermodal-content">
-                <span class="close" id="closeDeleteSupplierModal"></span>
+                <span class="close" id="closeDeleteSupplierModal">&times;</span>
                 <h2>Delete Supplier</h2>
                 <form id="deleteSupplierForm" method="post">
+                    <p>Are you sure you want to delete this supplier?<br>Please enter your password to confirm.</p>
                     <input type="hidden" id="delete_supplier_id" name="supplier_id">
-                    <p>Are you sure you want to delete this supplier?</p>
+                    <?php if ($logged_in_user_type === 'Admin'): ?>
+                        <label for="admin_password" style="text-align: center;">Administrator Password:</label>
+                    <?php else: ?>
+                        <label for="admin_password" style="text-align: center;">Owner Password:</label>
+                    <?php endif; ?>
+                    <div class="password-container">
+                        <input type="password" id="admin_password" name="admin_password" required>
+                        <button type="button" id="togglePassword" class="toggle-password toggle-on-delete-modal">Show</button>
+                    </div>
                     <button type="submit" class="modal-btn confirm-red">Delete</button>
-                    <button type="button" class="modal-btn cancel" id="cancelBtn">Cancel</button>
                 </form>
             </div>
         </div>
     </div>
-
+    
+    <!-- Additional JavaScript for managing modals and form submissions -->
     <script>
-        // Additional JavaScript for managing modals and form submissions
         document.addEventListener('DOMContentLoaded', () => {
             const addSupplierModal = document.getElementById('addSupplierModal');
             const openAddSupplierModal = document.getElementById('openAddSupplierModal');
@@ -153,7 +163,6 @@ $conn->close();
             const closeDeleteSupplierModal = document.getElementById('closeDeleteSupplierModal');
             const requestBtns = document.querySelectorAll('.request-btn');
             const deleteSupplierBtns = document.querySelectorAll('.delete-supplier-btn');
-            const cancelBtn = document.getElementById('cancelBtn');
 
             if (openAddSupplierModal && addSupplierModal && closeAddSupplierModal) {
                 // Open add supplier modal when button is clicked
@@ -213,37 +222,44 @@ $conn->close();
                 }
             });
 
-            if (cancelBtn) {
-                    // Close delete modal when cancel button is clicked
-                    cancelBtn.addEventListener('click', () => {
-                        deleteSupplierModal.style.display = 'none'; // Hide the delete modal
-                    });
-                };
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordField = document.getElementById('admin_password');
+            togglePassword.addEventListener('click', () => {
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    togglePassword.textContent = 'Hide';
+                } else {
+                    passwordField.type = 'password';
+                    togglePassword.textContent = 'Show';
+                }
+            });
 
-            // Handle delete supplier form submission with AJAX
+            // Handle delete supplier form submission with admin password confirmation
             document.getElementById('deleteSupplierForm').onsubmit = function(event) {
                 event.preventDefault();
                 const supplierId = document.getElementById('delete_supplier_id').value;
+                const adminPassword = document.getElementById('admin_password').value;
 
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "delete_supplier.php", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.onload = function () {
                     if (xhr.status == 200) {
-                        console.log(xhr.responseText); // Log the response
-                        if (xhr.responseText.trim() === "Success") {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
                             document.getElementById('supplier-' + supplierId).remove();
                             deleteSupplierModal.style.display = 'none';
+                            alert('Supplier successfully deleted.');
                         } else {
-                            alert('Error deleting supplier: ' + xhr.responseText);
+                            alert('Error: ' + response.message);
                         }
                     } else {
                         alert('Error deleting supplier. Please try again.');
                     }
                 };
-                xhr.send("supplier_id=" + supplierId);
+                xhr.send("supplier_id=" + supplierId + "&admin_password=" + encodeURIComponent(adminPassword));
             };
-
         });
     </script>
 </body>

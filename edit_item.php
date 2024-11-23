@@ -69,7 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <label for="item_price">Item Price:</label>
                 <input type="number" step="0.01" id="item_price" name="item_price" value="<?php echo $item['item_price']; ?>" required>
             </div>
-            <button type="submit" class="modal-btn edit">Save Changes</button>
+            <div class="form-actions">
+                <button type="submit" class="modal-btn edit">Save Changes</button>
+                <button type="button" class="modal-btn cancel" onclick="window.location.href='inventory.php'">Cancel</button>
+            </div>
         </form>
     </div>
     <?php include 'footer.php'; ?>

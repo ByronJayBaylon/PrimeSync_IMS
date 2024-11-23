@@ -16,10 +16,10 @@ $offset = ($page - 1) * $entries_per_page;
 $search_query = "";
 if (isset($_GET['search'])) {
     $search_query = $_GET['search'];
-    $sql = "SELECT * FROM items WHERE item_id LIKE '%$search_query%' OR item_name LIKE '%$search_query%' OR category LIKE '%$search_query%' LIMIT $offset, $entries_per_page";
+    $sql = "SELECT * FROM items WHERE item_id LIKE '%$search_query%' OR item_name LIKE '%$search_query%' OR category LIKE '%$search_query%'";
     $count_sql = "SELECT COUNT(*) AS total FROM items WHERE item_id LIKE '%$search_query%' OR item_name LIKE '%$search_query%' OR category LIKE '%$search_query%'";
 } else {
-    $sql = "SELECT * FROM items LIMIT $offset, $entries_per_page";
+    $sql = "SELECT * FROM items";
     $count_sql = "SELECT COUNT(*) AS total FROM items";
 }
 
@@ -30,6 +30,23 @@ $total_pages = ceil($total_entries / $entries_per_page);
 
 $start_entry = ($offset + 1);
 $end_entry = min(($offset + $entries_per_page), $total_entries);
+
+// Separate low stock items and normal items
+$low_stock_items = [];
+$normal_stock_items = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        if ($row['StockQuantity'] <= $row['MinimumStockLevel']) {
+            $low_stock_items[] = $row;
+        } else {
+            $normal_stock_items[] = $row;
+        }
+    }
+}
+
+// Combine low stock items and normal items
+$all_items = array_merge($low_stock_items, $normal_stock_items);
+$displayed_items = array_slice($all_items, $offset, $entries_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -38,14 +55,24 @@ $end_entry = min(($offset + $entries_per_page), $total_entries);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/PrimeSync_IMS/assets/Css/index.css?v=<?php echo time(); ?>">
-    <title>Merlie Rice Trading | Inventory List</title>
+    <title>Merlie Rice Trading | Inventory</title>
+    <style>
+        .low-stock {
+            background-color: #ffcccc;
+        }
+        .low-stock:hover {
+            background-color: #fe9898;
+            color: black;
+        }
+    </style>
 </head>
 <body>
     <?php include 'header.php'; ?> <!-- Include the header -->
     <?php include 'sidebar.php'; ?> <!-- Include the sidebar -->
 
     <div class="dashboard-container">
-        <h1>Inventory List</h1>
+        <h1>Inventory</h1>
+        <p>Manage your inventory from this page.</p>
         
         <!-- Search bar -->
         <div class="search-bar">
@@ -57,32 +84,35 @@ $end_entry = min(($offset + $entries_per_page), $total_entries);
 
         <!-- Items table -->
         <table class="inventory-table">
+            <caption style="text-align: left;">Inventories List</caption>
             <thead>
                 <tr>
-                    <th>Item ID</th>
-                    <th>Item Name</th>
+                    <th>Rice ID</th>
+                    <th>Rice Name</th>
                     <th>Category</th>
                     <th>Stock Quantity(in kg)</th>
-                    <th>Item Price(per kg)</th>
+                    <th>Price(per kg)</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if ($result->num_rows > 0): ?>
-                    <?php while($row = $result->fetch_assoc()): ?>
-                        <tr>
+                <?php if (count($displayed_items) > 0): ?>
+                    <?php foreach ($displayed_items as $row): ?>
+                        <tr class="<?php echo ($row['StockQuantity'] <= $row['MinimumStockLevel']) ? 'low-stock' : ''; ?>">
                             <td><?php echo $row['item_id']; ?></td>
                             <td><?php echo $row['item_name']; ?></td>
                             <td><?php echo $row['category']; ?></td>
                             <td><?php echo $row['StockQuantity']; ?></td>
                             <td><?php echo '₱'; echo $row['item_price']; ?></td>
-                            <td class="action-buttons">
-                                <a href="add_quantity.php?id=<?php echo $row['item_id']; ?>" class="modal-btn add">Add Stock</a>
-                                <a href="edit_item.php?id=<?php echo $row['item_id']; ?>" class="edit-btn modal-btn edit">Edit</a>
-                                <a href="delete_item.php?id=<?php echo $row['item_id']; ?>" class="delete-btn modal-btn confirm-red" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-                            </td>
+                                <td class="action-buttons">
+                                    <a href="add_quantity.php?id=<?php echo $row['item_id']; ?>" class="modal-btn add">Add Stock</a>
+                                <?php if ($role !== 'Clerk'): ?>
+                                    <a href="edit_item.php?id=<?php echo $row['item_id']; ?>" class="edit-btn modal-btn edit">Edit</a>
+                                    <a href="delete_item.php?id=<?php echo $row['item_id']; ?>" class="delete-btn modal-btn confirm-red">Delete</a>
+                                <?php endif; ?>
+                                </td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
                         <td colspan="6">No items found.</td>
@@ -99,6 +129,7 @@ $end_entry = min(($offset + $entries_per_page), $total_entries);
                     <option value="5" <?php if ($entries_per_page == 5) echo 'selected'; ?>>5</option>
                     <option value="10" <?php if ($entries_per_page == 10) echo 'selected'; ?>>10</option>
                     <option value="25" <?php if ($entries_per_page == 25) echo 'selected'; ?>>25</option>
+                    <option value="50" <?php if ($entries_per_page == 50) echo 'selected'; ?>>50</option>
                 </select> entries
             </form>
         </div>
