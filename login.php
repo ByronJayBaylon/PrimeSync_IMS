@@ -88,8 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$lockedOut) {
                        <?php echo $lockedOut ? 'disabled' : ''; ?>> <!-- Disable input if locked out -->
 
                 <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password"
-                       <?php echo $lockedOut ? 'disabled' : ''; ?>> <!-- Disable input if locked out -->
+                <div class="password-container">
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password"
+                           <?php echo $lockedOut ? 'disabled' : ''; ?>> <!-- Disable input if locked out -->
+                    <button type="button" id="togglePassword" class="toggle-password">Show</button>
+                </div>
                 
                 <button type="submit" class="btn-login" <?php echo $lockedOut ? 'disabled' : ''; ?>>LogIn</button> <!-- Disable button if locked out -->
             </form>
@@ -137,7 +140,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$lockedOut) {
                 <?php $_SESSION['failedAttempts'] = 0; ?> // Reset the failed login attempts on form reload
             }
         });
-        <?php endif; ?> // End the PHP if statement
+<?php endif; ?> // End the PHP if statement
+
+// Toggle Password Visibility
+document.getElementById('togglePassword').addEventListener('click', function () {
+    const passwordField = document.getElementById('password');
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', type);
+    this.textContent = type === 'password' ? 'Show' : 'Hide';
+});
 
     </script>
 </body>

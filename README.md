@@ -8,15 +8,15 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/Status-Active-green)](https://github.com/ByronJayBaylon/PrimeSync_IMS.git)
-[![GitHub Issues](https://img.shields.io/badge/Issues-20%20open-yellow)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/badge/Pull%20Requests-1%20open-yellow)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+[![GitHub Issues](https://img.shields.io/badge/Issues-5%20open-yellow)](https://github.com/ByronJayBaylon/PrimeSync_IMS/issues)
+[![GitHub Pull Requests](https://img.shields.io/badge/Pull%20Requests-1%20open-yellow)](https://github.com/ByronJayBaylon/PrimeSync_IMS/pulls)
 [![License](https://img.shields.io/badge/License-BSIT%2C%20PrimeSync%20Solutions-0D92F4)](license.txt)
 
 </div>
 
 ---
 
-<p align="center"> MRT is 
+<p align="center"> A comprehensive inventory management solution by PrimeSync Solutions.<br>Empowering businesses with automated resupply through <b>SMS API</b> and seamless sales management via <b>integrated POS system.</b>
     <br> 
 </p>
 
@@ -27,26 +27,45 @@
 - [Deployment](#deployment)
 - [Usage](#usage)
 - [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about" id="about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+The <b>Merlie Rice Trading (MRT) Inventory Management System</b> by <b>PrimeSync Solutions</b> is a comprehensive solution designed to streamline inventory management and sales processes for businesses. Our system aims to simplify the complexities of inventory tracking, automated resupply, and sales management, allowing businesses to focus on growth and customer satisfaction.
+<br><br>
+With MRT, businesses can efficiently manage their inventory levels, automate resupply notifications through SMS API, and seamlessly process sales transactions using our integrated Point of Sale (POS) system. By providing real-time visibility into inventory levels, sales performance, and customer interactions, MRT empowers businesses to make informed decisions, optimize operations, and drive revenue growth.
 
 ## 🏁 Getting Started <a name = "getting_started" id="getting_started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+#### To get a copy of the MRT Inventory Management System up and running on your local machine for development and testing purposes, follow these steps:
+<ol>
+<li>Download the project files from the provided link.</li>
+<li>Extract the downloaded files to the xampp/htdocs folder.</li>
+
+```
+C:\xampp\htdocs
+```
+
+<li>Inside the extracted folder, you should see a folder named 'PrimeSync_IMS'.</li>
+<li>Move the 'PrimeSync_IMS' folder to the xampp/htdocs folder.</li>
+The directory should look like this:
+
+```
+C:\xampp\htdocs\PrimeSync_IMS
+```
+
+<li>Import the database.sql file from the PrimeSync_IMS folder to your <b>local phpmyadmin</b> database.</li>
+<li>Configure your XAMPP server to serve the project by accessing http://localhost/PrimeSync_IMS in your web browser.</li>
+</ol>
+❗ But reminder, Before downloading the file, make sure to follow the Prerequisites first.
+
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
-
-```
-Give examples
-```
+As these files are not currently web hosted, you need to download [XAMPP](https://sourceforge.net/projects/xampp/), as we will utilize it to act as server.
+<br>
+After that, you may proceed to importing the files to 'htdocs' folder created automatically by XAMPP (It must be inside 'C:\xampp' directory folder if you chose default directory during XAMPP installation)
 
 ### Installing
 
@@ -96,7 +115,7 @@ Add additional notes about how to deploy this on a live system.
 
 ## ⛏️ Built Using <a name = "built_using" id="built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
+- [MySQL](https://www.mysql.com/) - Database
 - [Express](https://expressjs.com/) - Server Framework
 - [VueJs](https://vuejs.org/) - Web Framework
 - [NodeJs](https://nodejs.org/en/) - Server Environment

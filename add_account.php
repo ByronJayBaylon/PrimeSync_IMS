@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Check permissions for creating Admin and Owner accounts
-    if (($logged_in_user_type !== 'Owner') && ($account_type === 'Admin' || $account_type === 'Owner')) {
-        $_SESSION['message'] = "You do not have permission to create Admin or Owner accounts.";
+    // Check permissions for creating Owner and Admin accounts
+    if (($logged_in_user_type !== 'Admin') && ($account_type === 'Owner' || $account_type === 'Admin')) {
+        $_SESSION['message'] = "You do not have permission to create Owner or Admin accounts.";
         header("Location: user_management.php");
         exit();
     }

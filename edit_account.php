@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Check if the logged-in user is allowed to change the account type
-    if ($logged_in_user_type !== 'Owner' && ($account_type === 'Admin' || $account_type === 'Owner')) {
-        $_SESSION['message'] = "You do not have permission to change the account type to Admin or Owner.";
+    if ($logged_in_user_type !== 'Admin' && ($account_type === 'Owner' || $account_type === 'Admin')) {
+        $_SESSION['message'] = "You do not have permission to change the account type to Owner or Admin.";
         header("Location: user_management.php");
         exit();
     }

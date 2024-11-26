@@ -53,17 +53,16 @@ $conn->close();
 
     <div class="dashboard-container">
         <h1>Supplier Management</h1>
+        <p>Manage the flow of your stocks with your suppliers from this page.</p>
 
         <!-- Supplier Table Container -->
         <div class="table-container">
             <table border="1" cellspacing="0" cellpadding="10" class="supplier-table" id="supplierTable">
-                <caption style="text-align: left;">
-                    All Suppliers
-                </caption>
+                <caption style="text-align: left;">Suppliers List</caption>
                 <thead>
                     <tr>
                         <th>Supplier ID</th>
-                        <th>Name</th>
+                        <th>Supplier Name</th>
                         <th>Contact Number</th>
                         <th>Email</th>
                         <th>Action</th>
@@ -71,13 +70,14 @@ $conn->close();
                 </thead>
                 <tbody>
                     <?php foreach ($suppliers as $index => $supplier): ?>
-                        <tr>
+                        <tr id="supplier-<?php echo htmlspecialchars($supplier['supplier_id']); ?>">
                             <td><?php echo htmlspecialchars($supplier['supplier_id']); ?></td>
                             <td><?php echo htmlspecialchars($supplier['supplier_name']); ?></td>
                             <td><?php echo htmlspecialchars($supplier['contact_number']); ?></td>
                             <td><?php echo htmlspecialchars($supplier['email']); ?></td>
                             <td>
-                                <button class="request-btn modal-btn edit" data-id="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" data-name="<?php echo htmlspecialchars($supplier['supplier_name']); ?>">Request Stock</button>
+                                <button class="request-btn modal-btn edit" data-id="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" data-name="<?php echo htmlspecialchars($supplier['supplier_name']); ?>">Request Restock</button>
+                                <button class="delete-supplier-btn modal-btn confirm-red" data-id="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" data-name="<?php echo htmlspecialchars($supplier['supplier_name']); ?>">Delete Supplier</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -85,7 +85,6 @@ $conn->close();
             </table>
         </div>
 
-        
         <!-- Add Supplier Modal Structure -->
         <button id="openAddSupplierModal" class="modal-btn add"><b style="font-size: 15px;">+ </b>Add New Supplier</button>
 
@@ -106,7 +105,7 @@ $conn->close();
                     <label for="supplier_address">Address</label>
                     <textarea id="supplier_address" name="address"></textarea>
                     <br>
-                    <button type="submit">Add New Supplier</button>
+                    <button type="submit" class="modal-btn add">Add New Supplier</button>
                 </form>
             </div>
         </div>
@@ -115,7 +114,7 @@ $conn->close();
         <div id="requestStockModal" class="usermodal">
             <div class="usermodal-content">
                 <span class="close" id="closeRequestStockModal">&times;</span>
-                <h2>Request Stock</h2>
+                <h2>Request Restock</h2>
                 <form id="requestStockForm" method="post" action="request_stock.php">
                     <input type="hidden" id="supplier_id" name="supplier_id">
                     <label for="item_name">Item Name</label>
@@ -124,62 +123,144 @@ $conn->close();
                     <label for="quantity">Quantity</label>
                     <input type="number" id="quantity" name="quantity" required>
                     <br>
-                    <button type="submit">Send Request</button>
+                    <button type="submit" class="modal-btn edit">Send Request</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Supplier Modal Structure -->
+        <div id="deleteSupplierModal" class="usermodal">
+            <div class="usermodal-content">
+                <span class="close" id="closeDeleteSupplierModal">&times;</span>
+                <h2>Delete Supplier</h2>
+                <form id="deleteSupplierForm" method="post">
+                    <p>Are you sure you want to delete this supplier?<br>Please enter your password to confirm.</p>
+                    <input type="hidden" id="delete_supplier_id" name="supplier_id">
+                    <?php if ($logged_in_user_type === 'Admin'): ?>
+                        <label for="admin_password" style="text-align: center;">Administrator Password:</label>
+                    <?php else: ?>
+                        <label for="admin_password" style="text-align: center;">Owner Password:</label>
+                    <?php endif; ?>
+                    <div class="password-container">
+                        <input type="password" id="admin_password" name="admin_password" required>
+                        <button type="button" id="togglePassword" class="toggle-password toggle-on-delete-modal">Show</button>
+                    </div>
+                    <button type="submit" class="modal-btn confirm-red">Delete</button>
                 </form>
             </div>
         </div>
     </div>
-
+    
+    <!-- Additional JavaScript for managing modals and form submissions -->
     <script>
-        // Additional JavaScript for managing modals and form submissions
         document.addEventListener('DOMContentLoaded', () => {
-    const addSupplierModal = document.getElementById('addSupplierModal');
-    const openAddSupplierModal = document.getElementById('openAddSupplierModal');
-    const closeAddSupplierModal = document.getElementById('closeAddSupplierModal');
-    const requestStockModal = document.getElementById('requestStockModal');
-    const closeRequestStockModal = document.getElementById('closeRequestStockModal');
-    const requestBtns = document.querySelectorAll('.request-btn');
+            const addSupplierModal = document.getElementById('addSupplierModal');
+            const openAddSupplierModal = document.getElementById('openAddSupplierModal');
+            const closeAddSupplierModal = document.getElementById('closeAddSupplierModal');
+            const requestStockModal = document.getElementById('requestStockModal');
+            const closeRequestStockModal = document.getElementById('closeRequestStockModal');
+            const deleteSupplierModal = document.getElementById('deleteSupplierModal');
+            const closeDeleteSupplierModal = document.getElementById('closeDeleteSupplierModal');
+            const requestBtns = document.querySelectorAll('.request-btn');
+            const deleteSupplierBtns = document.querySelectorAll('.delete-supplier-btn');
 
-    if (openAddSupplierModal && addSupplierModal && closeAddSupplierModal) {
-        // Open add supplier modal when button is clicked
-        openAddSupplierModal.addEventListener('click', () => {
-            addSupplierModal.style.display = 'block';
-        });
+            if (openAddSupplierModal && addSupplierModal && closeAddSupplierModal) {
+                // Open add supplier modal when button is clicked
+                openAddSupplierModal.addEventListener('click', () => {
+                    addSupplierModal.style.display = 'block';
+                });
 
-        // Close add supplier modal when button is clicked
-        closeAddSupplierModal.addEventListener('click', () => {
-            addSupplierModal.style.display = 'none';
-        });
+                // Close add supplier modal when button is clicked
+                closeAddSupplierModal.addEventListener('click', () => {
+                    addSupplierModal.style.display = 'none';
+                });
 
-        // Close add supplier modal when clicking outside of it
-        window.addEventListener('click', (event) => {
-            if (event.target === addSupplierModal) {
-                addSupplierModal.style.display = 'none';
+                // Close add supplier modal when clicking outside of it
+                window.addEventListener('click', (event) => {
+                    if (event.target === addSupplierModal) {
+                        addSupplierModal.style.display = 'none';
+                    }
+                });
             }
+
+            requestBtns.forEach(button => {
+                button.addEventListener('click', () => {
+                    const supplierId = button.getAttribute('data-id');
+                    document.getElementById('supplier_id').value = supplierId;
+                    document.getElementById('item_name').value = ''; // Empty the item name field
+                    requestStockModal.style.display = 'block';
+                });
+            });
+
+            closeRequestStockModal.addEventListener('click', () => {
+                requestStockModal.style.display = 'none';
+            });
+
+            // Close request stock modal when clicking outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === requestStockModal) {
+                    requestStockModal.style.display = 'none';
+                }
+            });
+
+            deleteSupplierBtns.forEach(button => {
+                button.addEventListener('click', () => {
+                    const supplierId = button.getAttribute('data-id');
+                    document.getElementById('delete_supplier_id').value = supplierId;
+                    deleteSupplierModal.style.display = 'block';
+                });
+            });
+
+            closeDeleteSupplierModal.addEventListener('click', () => {
+                deleteSupplierModal.style.display = 'none';
+            });
+
+            // Close delete supplier modal when clicking outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === deleteSupplierModal) {
+                    deleteSupplierModal.style.display = 'none';
+                }
+            });
+
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordField = document.getElementById('admin_password');
+            togglePassword.addEventListener('click', () => {
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    togglePassword.textContent = 'Hide';
+                } else {
+                    passwordField.type = 'password';
+                    togglePassword.textContent = 'Show';
+                }
+            });
+
+            // Handle delete supplier form submission with admin password confirmation
+            document.getElementById('deleteSupplierForm').onsubmit = function(event) {
+                event.preventDefault();
+                const supplierId = document.getElementById('delete_supplier_id').value;
+                const adminPassword = document.getElementById('admin_password').value;
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "delete_supplier.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            document.getElementById('supplier-' + supplierId).remove();
+                            deleteSupplierModal.style.display = 'none';
+                            alert('Supplier successfully deleted.');
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    } else {
+                        alert('Error deleting supplier. Please try again.');
+                    }
+                };
+                xhr.send("supplier_id=" + supplierId + "&admin_password=" + encodeURIComponent(adminPassword));
+            };
         });
-    }
-
-    requestBtns.forEach(button => {
-        button.addEventListener('click', () => {
-            const supplierId = button.getAttribute('data-id');
-            document.getElementById('supplier_id').value = supplierId;
-            document.getElementById('item_name').value = ''; // Empty the item name field
-            requestStockModal.style.display = 'block';
-        });
-    });
-
-    closeRequestStockModal.addEventListener('click', () => {
-        requestStockModal.style.display = 'none';
-    });
-
-    // Close request stock modal when clicking outside of it
-    window.addEventListener('click', (event) => {
-        if (event.target === requestStockModal) {
-            requestStockModal.style.display = 'none';
-        }
-    });
-});
-
     </script>
 </body>
 </html>

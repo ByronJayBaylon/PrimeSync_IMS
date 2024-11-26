@@ -37,12 +37,14 @@ $role = $_SESSION['role']; // Get user role from session
                     <div>Categories</div>
                 </a>
             </li>
-            <li style="margin-bottom: 15px;">
-                <a href="supplier_management.php" class="sidebar-btn-green" style="text-decoration: none; display: block; padding: 15px; background: #272727; color: #fff; border-radius: 5px; text-align: center; transition: background-color 0.3s;">
-                    <i class="fas fa-truck"></i> <!-- Supplier Icon -->
-                    <div>Supplier Management</div>
-                </a>
-            </li>
+            <?php if ($role !== 'Clerk'): ?>
+                <li style="margin-bottom: 15px;">
+                    <a href="supplier_management.php" class="sidebar-btn-green" style="text-decoration: none; display: block; padding: 15px; background: #272727; color: #fff; border-radius: 5px; text-align: center; transition: background-color 0.3s;">
+                        <i class="fas fa-truck"></i> <!-- Supplier Icon -->
+                        <div>Supplier Management</div>
+                    </a>
+                </li>
+            <?php endif; ?>
             <?php if ($role !== 'Clerk'): ?>
                 <li style="margin-bottom: 15px;">
                     <a href="user_management.php" class="sidebar-btn-green" style="text-decoration: none; display: block; padding: 15px; background: #272727; color: #fff; border-radius: 5px; text-align: center; transition: background-color 0.3s;">

@@ -1,135 +1,88 @@
--- phpMyAdmin SQL Dump
--- version 4.2.11
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Dec 08, 2023 at 02:30 AM
--- Server version: 5.6.21
--- PHP Version: 7.4.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `posimsci`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `accounts`
---
-
+-- Create accounts table if not exists
 CREATE TABLE IF NOT EXISTS `accounts` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `account_type` varchar(50) DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `created_by` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `accounts`
---
-
+-- Insert initial data into accounts table
 INSERT INTO `accounts` (`id`, `username`, `password`, `account_type`, `date_created`, `created_by`) VALUES
 (1, 'admin', '$2y$10$L6BKTF8v7Ok/meG.P6eCi.VoSR4bZsEt/M7PZqy37fsajHOP5m/0a', 'Admin', '2023-12-07 00:38:12', 'Admin'),
 (2, 'clerk', '$2y$10$L6BKTF8v7Ok/meG.P6eCi.VoSR4bZsEt/M7PZqy37fsajHOP5m/0a', 'Clerk', '2023-12-06 21:45:50', 'admin'),
-(3, 'cashier', '$2y$10$L6BKTF8v7Ok/meG.P6eCi.VoSR4bZsEt/M7PZqy37fsajHOP5m/0a', 'Cashier', '2023-12-06 21:46:00', 'admin');
+(3, 'cashier', '$2y$10$L6BKTF8v7Ok/meG.P6eCi.VoSR4bZsEt/M7PZqy37fsajHOP5m/0a', 'Cashier', '2023-12-06 21:46:00', 'admin'),
+(4, 'owner', '$2a$12$J2BnddfQaPLWMvh6pUxwVuZ1X9tlQGdbAZl94RY5i9UAvK/G2fIya', 'Owner', '2023-12-07 01:00:00', 'owner');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `category`
---
-
+-- Create category table if not exists
 CREATE TABLE IF NOT EXISTS `category` (
-`id` int(11) NOT NULL,
+  `cat_id` int(11) NOT NULL AUTO_INCREMENT,
   `date_time` datetime DEFAULT NULL,
   `category` varchar(100) DEFAULT NULL,
-  `creator` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `creator` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`cat_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `category`
---
-
-INSERT INTO `category` (`id`, `date_time`, `category`, `creator`) VALUES
+-- Insert initial data into category table
+INSERT INTO `category` (`cat_id`, `date_time`, `category`, `creator`) VALUES
 (1, '2024-11-14 08:44:20', 'Sinandomeng', 'admin'),
 (2, '2024-11-14 08:44:20', 'Dinorado', 'admin'),
 (3, '2024-11-14 08:44:20', 'Milagrosa', 'admin'),
 (4, '2024-11-14 08:44:20', 'Brown Dinorado', 'admin'),
 (5, '2024-11-14 08:44:20', 'Malagkit na Puti', 'admin'),
-(6, '2024-11-14 08:44:20', 'Malagkit na Itim', 'admin'),
-(7, '2024-11-14 08:44:20', 'Red Rice', 'admin');
-(8, '2024-11-14 08:44:20', 'Black Rice', 'admin');
-(9, '2024-11-14 08:44:20', 'Doña Maria Jasponica', 'admin');
-(10, '2024-11-14 08:44:20', 'Doña Maria Miponica', 'admin');
-(11, '2024-11-14 08:44:20', 'Tinawon', 'admin');
-(12, '2024-11-14 08:44:20', 'Unoy', 'admin');
-(13, '2024-11-14 08:44:20', 'Angelica', 'admin');
-(14, '2024-11-14 08:44:20', 'Balatinaw', 'admin');
-(15, '2024-11-14 08:44:20', 'Malagkit na Pula', 'admin');
-(16, '2024-11-14 08:44:20', 'Japanese Rice (Sushi)', 'admin');
-(17, '2024-11-14 08:44:20', 'Basmati Rice', 'admin');
-(18, '2024-11-14 08:44:20', 'Jasmine Rice', 'admin');
-(19, '2024-11-14 08:44:20', 'Calrose Rice', 'admin');
-(20, '2024-11-14 08:44:20', 'Arborio', 'admin');
--- --------------------------------------------------------
+(6, '2024-11-14 08:44:20', 'Red Rice', 'admin'),
+(7, '2024-11-14 08:44:20', 'Doña Maria Jasponica', 'admin'),
+(8, '2024-11-14 08:44:20', 'Malagkit na Pula', 'admin'),
+(9, '2024-11-14 08:44:20', 'Japanese Rice (Sushi)', 'admin'),
+(10, '2024-11-14 08:44:20', 'Basmati Rice', 'admin'),
+(11, '2024-11-14 08:44:20', 'Jasmine Rice', 'admin');
 
---
--- Table structure for table `items`
---
-
+-- Create items table if not exists
 CREATE TABLE IF NOT EXISTS `items` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `RiceName` varchar(100) NOT NULL,
   `ProcessingMethod` varchar(100) DEFAULT NULL,
-  `description` text,
+  `Region` varchar(100) DEFAULT NULL,
   `date_time` datetime DEFAULT NULL,
+  `StockQuantity` int(11) NOT NULL,
   `supplier` varchar(100) DEFAULT NULL,
-  `quantities` int(11) DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL
+  `QualityGrade` varchar(100) DEFAULT NULL,
+  `MinimumStockLevel` int(11) NOT NULL,
+  `PricePerKilogram` decimal(10,2) DEFAULT NULL,
   `creator` varchar(100) DEFAULT NULL,
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+  `category` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `items`
---
+-- Insert initial data into items table
+INSERT INTO `items` (`id`, `RiceName`, `ProcessingMethod`, `Region`, `date_time`, `StockQuantity`, `supplier`, `QualityGrade`, `MinimumStockLevel`, `PricePerKilogram`, `creator`, `category`) VALUES
+(1, "Harvester's Sinandomeng", 'Milled', 'Nueva Ecija', '2024-11-07 08:44:45', 500, 'Sunnywood Superfoods Corporation', 'Premium', 50, 50.00, 'admin', 'Sinandomeng'),
+(2, "Golden Grains Sinandomeng Special", 'Milled', 'Isabela', '2024-11-07 08:44:45', 300, 'Golden Grains Philippines', 'Specialty', 30, 55.00, 'admin', 'Sinandomeng'),
+(3, "Harvester's Dinorado", 'Semi-Milled', 'Nueva Ecija', '2024-11-07 08:44:45', 400, 'Sunnywood Superfoods Corporation', 'Premium', 50, 60.00, 'admin', 'Dinorado'),
+(4, "Golden Grains Dinurado", 'Semi-Milled', 'Mindoro', '2024-11-07 08:44:45', 350, 'Golden Grains Philippines', 'Premium', 30, 65.00, 'admin', 'Dinorado'),
+(5, "Jordan Farms Milagrosa", 'Milled', 'Iloilo', '2024-11-07 08:44:45', 250, 'Sunnywood Superfoods Corporation', 'Specialty', 25, 70.00, 'admin', 'Milagrosa'),
+(6, "Angelica Milagrosa", 'Milled', 'Isabela', '2024-11-07 08:44:45', 200, 'R.E.J. Commercial', 'Premium', 20, 65.00, 'admin', 'Milagrosa'),
+(7, "Jordan Farms Organic Brown Dinorado", 'Unpolished', 'Nueva Ecija', '2024-11-07 08:44:45', 150, 'Sunnywood Superfoods Corporation', 'Organic', 20, 75.00, 'admin', 'Brown Dinorado'),
+(8, "Golden Grains Organic Brown", 'Unpolished', 'Mindoro', '2024-11-07 08:44:45', 200, 'Golden Grains Philippines', 'Organic', 25, 80.00, 'admin', 'Brown Dinorado'),
+(9, "Farm Boy White Glutinous", 'Milled', 'Nueva Ecija', '2024-11-07 08:44:45', 300, 'Sunnywood Superfoods Corporation', 'Specialty', 30, 60.00, 'admin', 'Malagkit na Puti'),
+(10, "Golden Grains Malagkit", 'Milled', 'Isabela', '2024-11-07 08:44:45', 250, 'Golden Grains Philippines', 'Specialty', 25, 65.00, 'admin', 'Malagkit na Puti'),
+(11, "Jordan Farms Organic Red", 'Unpolished', 'Nueva Ecija', '2024-11-07 08:44:45', 150, 'Sunnywood Superfoods Corporation', 'Organic', 20, 80.00, 'admin', 'Red Rice'),
+(12, "Golden Grains Organic Red", 'Unpolished', 'Mindoro', '2024-11-07 08:44:45', 200, 'Golden Grains Philippines', 'Organic', 25, 85.00, 'admin', 'Red Rice'),
+(13, "Doña Maria Jasponica", 'Milled', 'Nueva Ecija', '2024-11-07 08:44:45', 500, 'SL Agritech Corporation', 'Premium', 50, 70.00, 'admin', 'Doña Maria Jasponica'),
+(14, "Doña Maria Jasponica Plus", 'Milled', 'Nueva Ecija', '2024-11-07 08:44:45', 400, 'SL Agritech Corporation', 'Specialty', 50, 75.00, 'admin', 'Doña Maria Jasponica'),
+(15, "Harvester's Red Glutinous", 'Milled', 'Nueva Ecija', '2024-11-07 08:44:45', 200, 'Sunnywood Superfoods Corporation', 'Premium', 20, 75.00, 'admin', 'Malagkit na Pula'),
+(16, "Golden Grains Red Malagkit", 'Milled', 'Mindoro', '2024-11-07 08:44:45', 180, 'Golden Grains Philippines', 'Specialty', 20, 80.00, 'admin', 'Malagkit na Pula'),
+(17, "Harvester's Kanto Japanese", 'Milled', 'Nueva Ecija', '2024-11-07 08:44:45', 300, 'Sunnywood Superfoods Corporation', 'Specialty', 30, 90.00, 'admin', 'Japanese Rice (Sushi)'),
+(18, "Golden Grains Kanto Sushi", 'Milled', 'Isabela', '2024-11-07 08:44:45', 250, 'Golden Grains Philippines', 'Specialty', 30, 95.00, 'admin', 'Japanese Rice (Sushi)'),
+(19, "Jordan Farms Basmati", 'Semi-Milled', 'Imported (India)', '2024-11-07 08:44:45', 200, 'Sunnywood Superfoods Corporation', 'Specialty', 20, 120.00, 'admin', 'Basmati Rice'),
+(20, "Daawat Basmati", 'Semi-Milled', 'Imported (India)', '2024-11-07 08:44:45', 150, 'Daawat Foods Limited', 'Specialty', 15, 125.00, 'admin', 'Basmati Rice'),
+(21, "Harvester's Thai Jasmine", 'Milled', 'Imported (Thailand)', '2024-11-07 08:44:45', 300, 'Sunnywood Superfoods Corporation', 'Premium', 30, 110.00, 'admin', 'Jasmine Rice'),
+(22, "Golden Grains Thai Jasmine", 'Milled', 'Imported (Thailand)', '2024-11-07 08:44:45', 250, 'Golden Grains Philippines', 'Premium', 30, 115.00, 'admin', 'Jasmine Rice');
 
-INSERT INTO `items` (`id`, `name`, `ProcessingMethod`, `description`, `date_time`,`supplier`, `quantities`, `price`, `creator`) VALUES
-(1, 'Sinandomeng', 'Medium Grain', 'Milled (White)', '2023-12-07 08:44:45', 'Nueva Farmers Co.', 5000, 66.00, 'admin'),
-(2, 'Dinorado', 'Long Grain', 'Milled (White)', '2023-12-07 10:11:16', 'Isabela Rice Traders', 3000, 82.50, 'admin'),
-(3, 'Milagrosa', 'Long Grain', 'Milled (White)', '2023-12-07 10:13:48', 'Angelica Rice Supply', 2000, 99.00, 'admin'),
-(4, 'Brown Dinorado', 'Long Grain', 'Brown (Unmilled)', '2023-12-07 10:52:53', 'Nueva Farmers Co.', 1500, 110.00, 'admin'),
-(5, 'Malagkit na Puti', 'Short Grain', 'Glutinous (White)', '2023-12-07 10:53:21', 'Bulacan Sticky Rice Co.', 1000, 137.50, 'admin'),
-(6, 'Malagkit na Itim', 'Short Grain', 'Glutinous (Black)', '2023-12-07 11:27:42', 'Bulacan Sticky Rice Co.', 800, 165.00, 'admin'),
-(7, 'Red Rice', 'Long Grain', 'Red (Unmilled)', '2023-12-07 11:28:00', 'Ifugao Heirloom Traders', 1200, 121.00, 'admin'),
-(8, 'Black Rice', 'Short Grain', 'Black (Unmilled)', '2023-12-07 11:28:38', 'Cordillera Organic Co.', 600, 192.50, 'admin'),
-(9, 'Doña Maria Jasponica', 'Medium Grain', 'Milled (White)', '2023-12-07 11:29:03', 'Jasponica Rice Trading', 2500, 99.00, 'admin'),
-(10, 'Doña Maria Miponica', 'Short Grain', 'Milled (White)', '2023-12-07 11:29:22', 'Miponica Rice Suppliers', 2200, 104.50, 'admin'),
-(11, 'Tinawon', 'Long Grain', 'Brown (Unmilled)', '2023-12-07 11:29:40', 'Ifugao Heirloom Traders', 700, 165.00, 'admin'),
-(12, 'Unoy', 'Long Grain', 'Red (Unmilled)', '2023-12-08 09:14:26', 'Cordillera Organic Co.', 500, 176.00, 'admin'),
-(13, 'Angelica', 'Long Grain', 'Milled (White)', '2023-12-08 09:14:26', 'Angelica Rice Supply', 4000, 88.00, 'admin'),
-(14, 'Balatinaw', 'Short Grain', 'Black (Unmilled)', '2023-12-08 09:14:26', 'Cordillera Heirloom Co.', 400, 203.50, 'admin'),
-(15, 'Malagkit na Pula', 'Short Grain', 'Glutinous (Red)', '2023-12-08 09:14:26', 'Bulacan Sticky Rice Co.', 900, 154.00, 'admin'),
-(16, 'Japanese Rice (Sushi)', 'Short Grain', 'Milled (White)', '2023-12-08 09:14:26', 'Tokyo Rice Exports', 1500, 220.00,'admin'),
-(17, 'Basmati Rice', 'Long Grain', 'Milled (White)', '2023-12-08 09:14:26', 'Karachi Rice Traders', 1800, 275.00, 'admin'),
-(18, 'Jasmine Rice', 'Long Grain', 'Milled (White)', '2023-12-08 09:14:26', 'Bangkok Rice Exporters', 2200, 137.50, 'admin'),
-(19, 'Calrose Rice', 'Long Grain', 'Milled (White)', '2023-12-08 09:14:26', 'California Rice Co.', 1200, 165.00, 'admin'),
-(20, 'Arborio Rice', 'Short Grain', 'Milled (White)', '2023-12-08 09:14:26', 'Italian Grain Co.', 800, 330.00, 'admin');
--- --------------------------------------------------------
-
---
--- Table structure for table `sales`
---
+-- Create sales table if not exists
 CREATE TABLE IF NOT EXISTS `sales` (
   `sale_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) DEFAULT NULL,
@@ -138,88 +91,74 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `quantity` int(11) DEFAULT NULL,
   `sub_total` decimal(10,2) DEFAULT NULL,
   `date` date DEFAULT NULL,
-  `month` int(11) GENERATED ALWAYS AS (MONTH(`date`)) STORED,
-  `year` int(11) GENERATED ALWAYS AS (YEAR(`date`)) STORED,
-  `week` int(11) GENERATED ALWAYS AS (WEEK(`date`)) STORED,
+  `month` int(11) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL,
+  `week` int(11) DEFAULT NULL,
   PRIMARY KEY (`sale_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Inserting new data for the `sales` table
+-- Insert initial data into sales table
 INSERT INTO `sales` (`sale_id`, `item_id`, `item_name`, `date`, `quantity`, `sub_total`) VALUES
-(1,1, 'Sinandomeng', '2024-01-05', 50, 3300),
-(2,1, 'Sinandomeng', '2024-02-10', 100, 6600),
-(3,1, 'Sinandomeng', '2024-03-15', 200, 13200),
-(4,2, 'Dinorado', '2024-01-12', 30, 2475),
-(5,2, 'Dinorado', '2024-02-18', 60, 4950),
-(6,3, 'Milagrosa', '2024-03-25', 90, 8910),
-(7,4, 'Brown Dinorado', '2024-04-05', 45, 4950),
-(8,4, 'Brown Dinorado', '2024-05-15', 80, 8800),
-(9,5, 'Malagkit na Puti', '2024-06-20', 70, 9625),
-(10,6, 'Malagkit na Itim', '2024-07-18', 60, 9900),
-(11,6, 'Malagkit na Itim', '2024-08-28', 30, 4950);
+(1, 1, 'Sinandomeng', '2024-01-05', 50, 3300),
+(2, 1, 'Sinandomeng', '2024-02-10', 100, 6600),
+(3, 1, 'Sinandomeng', '2024-03-15', 200, 13200),
+(4, 2, 'Dinorado', '2024-01-12', 30, 2475),
+(5, 2, 'Dinorado', '2024-02-18', 60, 4950),
+(6, 3, 'Milagrosa', '2024-03-25', 90, 8910),
+(7, 5, 'Malagkit na Puti', '2024-06-20', 70, 9625);
 
---
--- Indexes for dumped tables
---
+-- Create suppliers table if not exists
+CREATE TABLE IF NOT EXISTS `suppliers` (
+  `supplier_id` int(11) NOT NULL AUTO_INCREMENT,
+  `supplier_name` varchar(100) NOT NULL,
+  `contact_number` varchar(15) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` TEXT DEFAULT NULL,
+  PRIMARY KEY (`supplier_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indexes for table `accounts`
---
+-- Insert initial data into suppliers table
+INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `contact_number`, `email`, `address`) VALUES
+(1, 'Sunnywood Superfoods Corporation', '0917-123-4567', 'info@sunnywood.com', 'Nueva Ecija, Philippines'),
+(2, 'Golden Grains Philippines', '0918-234-5678', 'contact@goldengrains.ph', 'Isabela, Philippines'),
+(3, 'R.E.J. Commercial', '0921-345-6789', 'rej@gmail.com', 'Isabela, Philippines'),
+(4, 'SL Agritech Corporation', '0922-456-7890', 'sales@slagritech.com', 'Nueva Ecija, Philippines'),
+(5, 'Daawat Foods Limited', '0933-567-8901', 'support@daawatfoods.com', 'India');
+
+-- Adding supplier_id column to items table
+ALTER TABLE `items` ADD `supplier_id` INT;
+
+-- Set indexes and auto increment values for tables (only if they don't already exist)
 ALTER TABLE `accounts`
- ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY IF NOT EXISTS (`id`);
 
---
--- Indexes for table `category`
---
 ALTER TABLE `category`
- ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY IF NOT EXISTS (`cat_id`);
 
---
--- Indexes for table `items`
---
 ALTER TABLE `items`
- ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY IF NOT EXISTS (`id`);
 
---
--- Indexes for table `sales`
---
 ALTER TABLE `sales`
- ADD PRIMARY KEY (`sale_id`), ADD KEY `item_id` (`item_id`);
+ ADD PRIMARY KEY IF NOT EXISTS (`sale_id`), ADD KEY IF NOT EXISTS `item_id` (`item_id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
+ALTER TABLE `suppliers`
+ ADD PRIMARY KEY IF NOT EXISTS (`supplier_id`);
 
---
--- AUTO_INCREMENT for table `accounts`
---
 ALTER TABLE `accounts`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `items`
---
-ALTER TABLE `items`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
---
--- AUTO_INCREMENT for table `sales`
---
-ALTER TABLE `sales`
-MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
---
--- Constraints for dumped tables
---
+ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---
--- Constraints for table `sales`
---
+ALTER TABLE `category`
+ MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+ALTER TABLE `items`
+ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+ALTER TABLE `sales`
+ MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+ALTER TABLE `suppliers`
+ MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+-- Adding foreign key constraints
 ALTER TABLE `sales`
 ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
