@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->fetch();
 
     // Use Twilio API to send the stock request
-    $message = "Requesting $quantity of $item_name. Please restock.";
+    $message = "This is Merlie Rice Trading. We are requesting $quantity kilogram/s of $item_name. Please restock.";
     sendNotification($contact_number, $message);
 
     $_SESSION['message'] = "Stock request sent successfully.";
